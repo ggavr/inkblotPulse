@@ -1,0 +1,165 @@
+:root {
+  --ib-bg-primary: #FDF6F0;
+  --ib-bg-card: #FFFFFF;
+  --ib-bg-accent: #F5E6D8;
+  --ib-text-primary: #2D2A26;
+  --ib-text-secondary: #8A7E74;
+  --ib-accent: #C4686D;
+  --ib-accent-hover: #A8525A;
+  --ib-accent-light: #F2D5D7;
+  --ib-tag-bg: #EDE7E0;
+  --ib-tag-text: #6B5E54;
+  --ib-bookmark: #D4A373;
+  --ib-danger: #C0392B;
+  --ib-success: #5B8A72;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--ib-bg-primary);
+  color: var(--ib-text-primary);
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+main:focus {
+  outline: none;
+}
+
+.ib-no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.ib-no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes ib-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ib-card-fade-in {
+  animation: ib-fade-up 400ms ease-out;
+}
+
+@keyframes ib-like-bounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.ib-like-pop svg {
+  animation: ib-like-bounce 300ms ease-out;
+}
+
+.ib-tag-press:active {
+  transform: scale(0.95);
+}
+
+.ib-want-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(196, 104, 109, 0.4) !important;
+}
+
+.ib-want-btn:active {
+  transform: scale(0.97);
+}
+
+@keyframes ib-screen-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.ib-screen {
+  animation: ib-screen-fade 200ms ease-out;
+}
+
+.ib-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Toast */
+.ib-toast-root {
+  position: fixed;
+  left: 50%;
+  bottom: 88px;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .ib-toast-root {
+    bottom: 24px;
+  }
+}
+
+.ib-toast {
+  pointer-events: auto;
+  background: var(--ib-text-primary);
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: "DM Sans", sans-serif;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  animation: ib-toast-in 250ms ease-out;
+}
+
+.ib-toast--error {
+  background: var(--ib-danger);
+}
+
+.ib-toast--success {
+  background: #4a7c59;
+}
+
+@keyframes ib-toast-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
