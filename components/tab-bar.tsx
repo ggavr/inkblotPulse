@@ -105,7 +105,6 @@ export function TabBar({ isAdmin, isAuthed }: { isAdmin: boolean; isAuthed: bool
         }
       `}</style>
 
-      {!isAuthed ? null : null}
     </>
   );
 }

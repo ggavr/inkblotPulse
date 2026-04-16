@@ -25,7 +25,7 @@ export async function toggleLikeAction(
   const { data, error } = await supabase.rpc("toggle_like", {
     p_excerpt_id: parsed.data.excerptId,
   });
-  if (error) return { ok: false, error: error.message };
+  if (error) { console.error("toggle_like failed:", error); return { ok: false, error: "like_failed" }; }
 
   revalidatePath("/");
   return { ok: true, data: { liked: Boolean(data) } };
@@ -46,7 +46,7 @@ export async function toggleBookmarkAction(
   const { data, error } = await supabase.rpc("toggle_bookmark", {
     p_excerpt_id: parsed.data.excerptId,
   });
-  if (error) return { ok: false, error: error.message };
+  if (error) { console.error("toggle_bookmark failed:", error); return { ok: false, error: "bookmark_failed" }; }
 
   revalidatePath("/bookmarks");
   revalidatePath("/");
@@ -68,7 +68,7 @@ export async function registerViewAction(
   const { error } = await supabase.rpc("register_view", {
     p_excerpt_id: parsed.data.excerptId,
   });
-  if (error) return { ok: false, error: error.message };
+  if (error) { console.error("register_view failed:", error); return { ok: false, error: "view_failed" }; }
   return { ok: true };
 }
 
@@ -83,6 +83,6 @@ export async function registerWantAction(
   const { error } = await supabase.rpc("register_want", {
     p_excerpt_id: parsed.data.excerptId,
   });
-  if (error) return { ok: false, error: error.message };
+  if (error) { console.error("register_want failed:", error); return { ok: false, error: "want_failed" }; }
   return { ok: true };
 }

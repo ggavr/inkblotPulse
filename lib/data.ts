@@ -59,7 +59,7 @@ export async function getExcerpts(opts?: {
     query = query.overlaps("books.tags", opts.tags);
   }
   if (opts?.search && opts.search.trim().length > 0) {
-    const escaped = opts.search.trim().replace(/[,()]/g, " ");
+    const escaped = opts.search.trim().replace(/[,%_()]/g, " ");
     query = query.or(`title.ilike.%${escaped}%,author.ilike.%${escaped}%`, {
       referencedTable: "books",
     });
@@ -102,7 +102,7 @@ export async function getUserLikes(): Promise<Set<string>> {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return new Set();
-  const { data, error } = await supabase.from("likes").select("excerpt_id");
+  const { data, error } = await supabase.from("likes").select("excerpt_id").eq("user_id", user.id);
   if (error) return new Set();
   return new Set((data ?? []).map((r) => r.excerpt_id));
 }
@@ -113,7 +113,7 @@ export async function getUserBookmarks(): Promise<Set<string>> {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return new Set();
-  const { data, error } = await supabase.from("bookmarks").select("excerpt_id");
+  const { data, error } = await supabase.from("bookmarks").select("excerpt_id").eq("user_id", user.id);
   if (error) return new Set();
   return new Set((data ?? []).map((r) => r.excerpt_id));
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { ArrowDown, ArrowUp, Pencil, Plus, Trash2, X } from "lucide-react";
 import {
   deleteExcerptAction,
@@ -8,6 +8,7 @@ import {
   saveExcerptAction,
 } from "@/app/actions/admin";
 import { toast } from "@/components/toaster";
+import { primaryBtn, ghostBtn, iconBtn, modalOverlay, modalPanel } from "@/lib/admin-styles";
 import type { Book, ExcerptWithStats } from "@/lib/types";
 
 type Draft = {
@@ -25,6 +26,13 @@ export function ExcerptManager({ books, excerpts }: Props) {
   const [selectedBookId, setSelectedBookId] = useState<string>(books[0]?.id ?? "");
   const [draft, setDraft] = useState<Draft | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (!draft) return;
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setDraft(null); };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [draft]);
 
   const grouped = useMemo(() => {
     const byBook = new Map<string, ExcerptWithStats[]>();
@@ -280,41 +288,6 @@ export function ExcerptManager({ books, excerpts }: Props) {
   );
 }
 
-const primaryBtn: React.CSSProperties = {
-  display: "inline-flex",
-  alignItems: "center",
-  gap: 6,
-  background: "var(--ib-accent)",
-  color: "#FFFFFF",
-  border: "none",
-  padding: "10px 16px",
-  borderRadius: 999,
-  fontFamily: "'DM Sans', sans-serif",
-  fontSize: 13,
-  fontWeight: 700,
-  cursor: "pointer",
-};
-
-const ghostBtn: React.CSSProperties = {
-  background: "transparent",
-  color: "var(--ib-text-secondary)",
-  border: "1px solid rgba(138,126,116,0.3)",
-  padding: "10px 16px",
-  borderRadius: 999,
-  fontFamily: "'DM Sans', sans-serif",
-  fontSize: 13,
-  fontWeight: 600,
-  cursor: "pointer",
-};
-
-const iconBtn: React.CSSProperties = {
-  background: "transparent",
-  border: "none",
-  cursor: "pointer",
-  padding: 6,
-  color: "var(--ib-text-secondary)",
-};
-
 const empty: React.CSSProperties = {
   padding: "30px 20px",
   textAlign: "center",
@@ -324,26 +297,4 @@ const empty: React.CSSProperties = {
   background: "var(--ib-bg-card)",
   borderRadius: 14,
   border: "1px solid rgba(138,126,116,0.12)",
-};
-
-const modalOverlay: React.CSSProperties = {
-  position: "fixed",
-  inset: 0,
-  background: "rgba(45,42,38,0.45)",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: 20,
-  zIndex: 100,
-};
-
-const modalPanel: React.CSSProperties = {
-  background: "var(--ib-bg-primary)",
-  borderRadius: 18,
-  padding: 22,
-  width: "100%",
-  maxWidth: 640,
-  maxHeight: "90vh",
-  overflowY: "auto",
-  boxShadow: "0 20px 60px rgba(45,42,38,0.25)",
 };

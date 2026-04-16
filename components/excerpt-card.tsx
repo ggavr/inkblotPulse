@@ -97,7 +97,8 @@ export function ExcerptCard({ excerpt, book, initialLiked, initialBookmarked, is
       return;
     }
     startTransition(async () => {
-      await registerWantAction({ excerptId: excerpt.id });
+      const res = await registerWantAction({ excerptId: excerpt.id });
+      if (!res.ok) toast("Could not register interest.", "error");
     });
     window.open(safeUrl, "_blank", "noopener,noreferrer");
   };
@@ -257,6 +258,7 @@ export function ExcerptCard({ excerpt, book, initialLiked, initialBookmarked, is
           marginTop: 20,
           paddingTop: 16,
           borderTop: "1px solid rgba(138,126,116,0.12)",
+          flexWrap: "wrap",
         }}
       >
         <button
@@ -291,6 +293,7 @@ export function ExcerptCard({ excerpt, book, initialLiked, initialBookmarked, is
           onClick={handleBookmark}
           disabled={isPending}
           aria-pressed={bookmarked}
+          aria-label={bookmarked ? "Remove bookmark" : "Bookmark"}
           style={{
             display: "flex",
             alignItems: "center",

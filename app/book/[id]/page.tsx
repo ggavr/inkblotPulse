@@ -43,19 +43,17 @@ export default async function BookDetailPage({
 }) {
   const { id } = await params;
 
-  const [user, book, allBooks] = await Promise.all([
+  const [user, book, allBooks, likes, bookmarks] = await Promise.all([
     getCurrentUser(),
     getBookById(id),
     getBooks(),
+    getUserLikes(),
+    getUserBookmarks(),
   ]);
 
   if (!book) notFound();
 
-  const [excerpts, likes, bookmarks] = await Promise.all([
-    getExcerptsForBook(book.id),
-    user ? getUserLikes() : Promise.resolve(new Set<string>()),
-    user ? getUserBookmarks() : Promise.resolve(new Set<string>()),
-  ]);
+  const excerpts = await getExcerptsForBook(book.id);
 
   const similar = allBooks
     .filter(
@@ -99,6 +97,7 @@ export default async function BookDetailPage({
       </div>
 
       <header
+        className="ib-book-header"
         style={{
           display: "flex",
           gap: 22,

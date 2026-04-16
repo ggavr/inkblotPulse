@@ -101,6 +101,7 @@ function AuthBadge({ email }: { email: string | null }) {
       {email ? (
         <>
           <span
+            className="ib-auth-email"
             style={{
               maxWidth: 160,
               overflow: "hidden",
