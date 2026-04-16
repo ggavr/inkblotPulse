@@ -51,6 +51,19 @@ main:focus {
   outline: none;
 }
 
+/* Focus-visible indicators for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--ib-accent);
+  outline-offset: 2px;
+}
+
+/* Prevent iOS auto-zoom on input focus (requires >= 16px) */
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
 .ib-no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -95,6 +108,43 @@ main:focus {
 
 .ib-want-btn:active {
   transform: scale(0.97);
+}
+
+/* Auth submit button states */
+.ib-auth-submit:hover:not(:disabled) {
+  background: var(--ib-accent-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(196, 104, 109, 0.4) !important;
+}
+.ib-auth-submit:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Card action button hover states (like, bookmark, discuss) */
+.ib-card-action:hover {
+  background: rgba(138, 126, 116, 0.08) !important;
+}
+.ib-card-action:active {
+  background: rgba(138, 126, 116, 0.14) !important;
+}
+
+/* Tag filter scroll fade indicator */
+.ib-tag-scroll {
+  position: relative;
+}
+.ib-tag-scroll::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  background: linear-gradient(90deg, transparent, var(--ib-bg-primary));
+  pointer-events: none;
+  z-index: 1;
+}
+.ib-tag-scroll--end::after {
+  display: none;
 }
 
 @keyframes ib-screen-fade {
@@ -165,6 +215,15 @@ main:focus {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* AuthBadge: reposition on mobile to avoid overlapping sticky header */
+@media (max-width: 767px) {
+  .ib-auth-badge {
+    top: auto !important;
+    bottom: 72px !important;
+    right: 12px !important;
+  }
+}
+
 /* Responsive: book header stacks on small screens */
 @media (max-width: 480px) {
   .ib-book-header {
@@ -172,14 +231,16 @@ main:focus {
     align-items: center !important;
     text-align: center;
   }
+  .ib-book-header h1 {
+    font-size: clamp(22px, 5vw, 28px) !important;
+  }
+  .ib-book-header [role="img"] {
+    width: 120px !important;
+  }
   .ib-auth-email {
     max-width: 100px !important;
   }
-}
-
-/* Responsive: fluid font sizes for small screens */
-@media (max-width: 400px) {
-  .ib-book-header h1 {
-    font-size: clamp(22px, 5vw, 28px) !important;
+  .ib-auth-badge {
+    display: none !important;
   }
 }

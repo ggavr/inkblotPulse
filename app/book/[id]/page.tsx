@@ -89,6 +89,7 @@ export default async function BookDetailPage({
             fontSize: 14,
             fontWeight: 600,
             textDecoration: "none",
+            padding: "10px 0",
           }}
         >
           <ArrowLeft size={18} />

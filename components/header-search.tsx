@@ -77,7 +77,7 @@ export function HeaderSearch() {
               background: "transparent",
               padding: "4px 10px",
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: 14,
+              fontSize: 16,
               color: "var(--ib-text-primary)",
               minWidth: 0,
             }}
@@ -93,7 +93,12 @@ export function HeaderSearch() {
               background: "transparent",
               border: "none",
               cursor: "pointer",
-              padding: 2,
+              padding: 8,
+              minWidth: 44,
+              minHeight: 44,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
               color: "var(--ib-text-secondary)",
             }}
           >
@@ -109,8 +114,8 @@ export function HeaderSearch() {
             background: "var(--ib-bg-card)",
             border: "1px solid rgba(138,126,116,0.18)",
             borderRadius: "50%",
-            width: 38,
-            height: 38,
+            width: 44,
+            height: 44,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

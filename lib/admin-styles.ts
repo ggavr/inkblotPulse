@@ -1,12 +1,12 @@
 export const inputStyle: React.CSSProperties = {
-  padding: "10px 12px",
+  padding: "12px 14px",
   borderRadius: 10,
   border: "1px solid rgba(138,126,116,0.3)",
   background: "var(--ib-bg-primary)",
   fontFamily: "'DM Sans', sans-serif",
-  fontSize: 14,
+  fontSize: 16,
   color: "var(--ib-text-primary)",
-  outline: "none",
+  transition: "border-color 200ms",
 };
 
 export const primaryBtn: React.CSSProperties = {
@@ -16,7 +16,7 @@ export const primaryBtn: React.CSSProperties = {
   background: "var(--ib-accent)",
   color: "#FFFFFF",
   border: "none",
-  padding: "10px 16px",
+  padding: "12px 18px",
   borderRadius: 999,
   fontFamily: "'DM Sans', sans-serif",
   fontSize: 13,
@@ -28,7 +28,7 @@ export const ghostBtn: React.CSSProperties = {
   background: "transparent",
   color: "var(--ib-text-secondary)",
   border: "1px solid rgba(138,126,116,0.3)",
-  padding: "10px 16px",
+  padding: "12px 18px",
   borderRadius: 999,
   fontFamily: "'DM Sans', sans-serif",
   fontSize: 13,
@@ -40,7 +40,12 @@ export const iconBtn: React.CSSProperties = {
   background: "transparent",
   border: "none",
   cursor: "pointer",
-  padding: 6,
+  padding: 10,
+  minWidth: 44,
+  minHeight: 44,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
   color: "var(--ib-text-secondary)",
 };
 

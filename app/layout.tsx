@@ -80,6 +80,7 @@ export default async function RootLayout({
 function AuthBadge({ email }: { email: string | null }) {
   return (
     <div
+      className="ib-auth-badge"
       style={{
         position: "fixed",
         top: 12,
@@ -91,9 +92,9 @@ function AuthBadge({ email }: { email: string | null }) {
         background: "var(--ib-bg-card)",
         border: "1px solid rgba(138,126,116,0.2)",
         borderRadius: 999,
-        padding: "6px 12px",
+        padding: "8px 14px",
         fontFamily: "'DM Sans', sans-serif",
-        fontSize: 12,
+        fontSize: 13,
         color: "var(--ib-text-secondary)",
         boxShadow: "0 4px 12px rgba(45,42,38,0.06)",
       }}
@@ -120,10 +121,10 @@ function AuthBadge({ email }: { email: string | null }) {
                 border: "none",
                 cursor: "pointer",
                 fontFamily: "'DM Sans', sans-serif",
-                fontSize: 12,
+                fontSize: 13,
                 fontWeight: 600,
                 color: "var(--ib-accent)",
-                padding: 0,
+                padding: "8px 4px",
               }}
             >
               Sign out
@@ -134,8 +135,10 @@ function AuthBadge({ email }: { email: string | null }) {
         <Link
           href="/auth/sign-in"
           style={{
+            display: "inline-block",
             fontWeight: 600,
             color: "var(--ib-accent)",
+            padding: "8px 14px",
           }}
         >
           Sign in
