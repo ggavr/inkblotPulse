@@ -317,7 +317,7 @@ export function ExcerptCard({ excerpt, book, initialLiked, initialBookmarked, is
             }}
           >
             <Bookmark size={20} fill={bookmarked ? "var(--ib-bookmark)" : "none"} strokeWidth={2} />
-            <span className="ib-action-label">{bookmarked ? "Saved" : "Save"}</span>
+            {/* label hidden — icon-only button */}
           </button>
 
           <a
@@ -375,7 +375,7 @@ export function ExcerptCard({ excerpt, book, initialLiked, initialBookmarked, is
             }}
           >
             <ShoppingBag size={15} />
-            <span className="ib-action-label">Want it</span>
+            <span className="ib-action-label">Buy</span>
           </button>
         </div>
       </div>
