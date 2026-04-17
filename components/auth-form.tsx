@@ -105,6 +105,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
               name="email"
               autoComplete="email"
               required
+              className="ib-auth-input"
               style={inputStyle}
             />
           </label>
@@ -118,6 +119,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
               autoComplete={mode === "sign-in" ? "current-password" : "new-password"}
               minLength={8}
               required
+              className="ib-auth-input"
               style={inputStyle}
             />
           </label>

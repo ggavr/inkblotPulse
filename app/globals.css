@@ -224,6 +224,41 @@ select {
   }
 }
 
+/* Hide action button labels on small screens, keep icons only */
+@media (max-width: 420px) {
+  .ib-action-label {
+    display: none !important;
+  }
+}
+
+/* Disabled state for primary CTA button */
+.ib-want-btn:disabled {
+  cursor: wait;
+  opacity: 0.7;
+  transform: none !important;
+  box-shadow: 0 4px 12px rgba(196, 104, 109, 0.2) !important;
+}
+
+/* Tag filter hover feedback */
+.ib-tag-press:hover {
+  filter: brightness(0.95);
+}
+
+/* Similar book card hover lift */
+.ib-similar-book {
+  transition: transform 200ms ease;
+}
+.ib-similar-book:hover {
+  transform: translateY(-3px);
+}
+
+/* Auth input focus style */
+.ib-auth-input:focus-visible {
+  outline: none;
+  border-color: var(--ib-accent) !important;
+  box-shadow: 0 0 0 3px var(--ib-accent-light) !important;
+}
+
 /* Responsive: book header stacks on small screens */
 @media (max-width: 480px) {
   .ib-book-header {

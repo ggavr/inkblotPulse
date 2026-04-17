@@ -243,6 +243,7 @@ export default async function BookDetailPage({
               <Link
                 key={b.id}
                 href={`/book/${b.id}`}
+                className="ib-similar-book"
                 style={{
                   textDecoration: "none",
                   color: "inherit",

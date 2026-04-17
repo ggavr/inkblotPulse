@@ -44,6 +44,7 @@ export function FeedLoadMore({ currentCount, hasMore }: Props) {
         type="button"
         onClick={handleClick}
         disabled={isPending}
+        className="ib-want-btn"
         style={{
           background: "var(--ib-accent)",
           color: "#FFFFFF",
@@ -56,6 +57,7 @@ export function FeedLoadMore({ currentCount, hasMore }: Props) {
           fontWeight: 700,
           letterSpacing: "0.02em",
           boxShadow: "0 4px 12px rgba(196,104,109,0.3)",
+          transition: "transform 200ms, box-shadow 200ms",
         }}
       >
         {isPending ? "Loading…" : "Load more"}

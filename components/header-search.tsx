@@ -52,59 +52,60 @@ export function HeaderSearch() {
       </h1>
 
       {open ? (
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            background: "var(--ib-bg-card)",
-            borderRadius: 999,
-            padding: "6px 12px",
-            border: "1px solid rgba(138,126,116,0.2)",
-          }}
-        >
-          <Search size={16} color="var(--ib-text-secondary)" aria-hidden="true" />
-          <input
-            autoFocus
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            placeholder="Search title or author"
-            aria-label="Search title or author"
+        <search style={{ flex: 1 }}>
+          <div
             style={{
-              flex: 1,
-              border: "none",
-              outline: "none",
-              background: "transparent",
-              padding: "4px 10px",
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: 16,
-              color: "var(--ib-text-primary)",
-              minWidth: 0,
-            }}
-          />
-          <button
-            type="button"
-            onClick={() => {
-              setValue("");
-              setOpen(false);
-            }}
-            aria-label="Close search"
-            style={{
-              background: "transparent",
-              border: "none",
-              cursor: "pointer",
-              padding: 8,
-              minWidth: 44,
-              minHeight: 44,
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              color: "var(--ib-text-secondary)",
+              background: "var(--ib-bg-card)",
+              borderRadius: 999,
+              padding: "6px 12px",
+              border: "1px solid rgba(138,126,116,0.2)",
             }}
           >
-            <X size={18} />
-          </button>
-        </div>
+            <Search size={16} color="var(--ib-text-secondary)" aria-hidden="true" />
+            <input
+              autoFocus
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              placeholder="Search title or author"
+              aria-label="Search title or author"
+              style={{
+                flex: 1,
+                border: "none",
+                outline: "none",
+                background: "transparent",
+                padding: "4px 10px",
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 16,
+                color: "var(--ib-text-primary)",
+                minWidth: 0,
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => {
+                setValue("");
+                setOpen(false);
+              }}
+              aria-label="Close search"
+              style={{
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                padding: 8,
+                minWidth: 44,
+                minHeight: 44,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "var(--ib-text-secondary)",
+              }}
+            >
+              <X size={18} />
+            </button>
+          </div>
+        </search>
       ) : (
         <button
           type="button"
