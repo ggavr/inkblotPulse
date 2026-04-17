@@ -37,6 +37,36 @@ export const excerptInputSchema = z.object({
 
 export type ExcerptInput = z.infer<typeof excerptInputSchema>;
 
+export const inviteInputSchema = z.object({
+  label: z.string().trim().min(1, "Label is required").max(200),
+  max_books: z
+    .number()
+    .int()
+    .positive()
+    .nullable()
+    .optional()
+    .transform((v) => v ?? null),
+  expires_at: z
+    .string()
+    .nullable()
+    .optional()
+    .transform((v) => v || null),
+});
+
+export type InviteInput = z.infer<typeof inviteInputSchema>;
+
+export const submitBookInputSchema = bookInputSchema.extend({
+  token: z.string().min(1, "Token is required"),
+});
+
+export type SubmitBookInput = z.infer<typeof submitBookInputSchema>;
+
+export const submitExcerptInputSchema = excerptInputSchema.extend({
+  token: z.string().min(1, "Token is required"),
+});
+
+export type SubmitExcerptInput = z.infer<typeof submitExcerptInputSchema>;
+
 export const signInSchema = z.object({
   email: z.string().trim().toLowerCase().email(),
   password: z.string().min(8).max(72),

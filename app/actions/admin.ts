@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/auth";
-import { bookInputSchema, excerptInputSchema } from "@/lib/validation";
+import { bookInputSchema, excerptInputSchema, inviteInputSchema } from "@/lib/validation";
 
 export type ActionResult<T = undefined> =
   | { ok: true; data?: T }
@@ -196,5 +196,115 @@ export async function moveExcerptAction(input: {
   });
   if (error) return { ok: false, error: asError(error) };
   revalidatePath("/admin");
+  return { ok: true };
+}
+
+// ── Invite management ──
+
+export async function createInviteAction(
+  raw: unknown
+): Promise<ActionResult<{ token: string }>> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "forbidden" };
+  }
+
+  const parsed = inviteInputSchema.safeParse(raw);
+  if (!parsed.success) {
+    return {
+      ok: false,
+      error: "invalid_input",
+      fieldErrors: parsed.error.flatten().fieldErrors,
+    };
+  }
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("invite_tokens")
+    .insert({
+      label: parsed.data.label,
+      max_books: parsed.data.max_books,
+      expires_at: parsed.data.expires_at,
+    })
+    .select("token")
+    .single();
+  if (error) return { ok: false, error: error.message };
+
+  revalidatePath("/admin/invites");
+  return { ok: true, data: { token: data.token } };
+}
+
+export async function revokeInviteAction(input: {
+  tokenId: string;
+}): Promise<ActionResult> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "forbidden" };
+  }
+
+  const parsed = z.object({ tokenId: z.string().uuid() }).safeParse(input);
+  if (!parsed.success) return { ok: false, error: "invalid_input" };
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("invite_tokens")
+    .update({ revoked: true })
+    .eq("id", parsed.data.tokenId);
+  if (error) return { ok: false, error: error.message };
+
+  revalidatePath("/admin/invites");
+  return { ok: true };
+}
+
+// ── Submission moderation ──
+
+export async function approveSubmissionAction(input: {
+  bookId: string;
+}): Promise<ActionResult> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "forbidden" };
+  }
+
+  const parsed = z.object({ bookId: z.string().uuid() }).safeParse(input);
+  if (!parsed.success) return { ok: false, error: "invalid_input" };
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("books")
+    .update({ status: "published" })
+    .eq("id", parsed.data.bookId);
+  if (error) return { ok: false, error: error.message };
+
+  revalidatePath("/");
+  revalidatePath("/admin");
+  revalidatePath("/admin/submissions");
+  return { ok: true };
+}
+
+export async function rejectSubmissionAction(input: {
+  bookId: string;
+}): Promise<ActionResult> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "forbidden" };
+  }
+
+  const parsed = z.object({ bookId: z.string().uuid() }).safeParse(input);
+  if (!parsed.success) return { ok: false, error: "invalid_input" };
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("books")
+    .update({ status: "rejected" })
+    .eq("id", parsed.data.bookId);
+  if (error) return { ok: false, error: error.message };
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/submissions");
   return { ok: true };
 }

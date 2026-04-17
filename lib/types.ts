@@ -1,3 +1,5 @@
+export type BookStatus = 'pending' | 'published' | 'rejected';
+
 export type Book = {
   id: string;
   title: string;
@@ -7,6 +9,18 @@ export type Book = {
   cover_bg: string;
   cover_text: string;
   tags: string[];
+  status: BookStatus;
+  invite_token_id: string | null;
+  created_at: string;
+};
+
+export type InviteToken = {
+  id: string;
+  token: string;
+  label: string;
+  max_books: number | null;
+  expires_at: string | null;
+  revoked: boolean;
   created_at: string;
 };
 
@@ -51,9 +65,24 @@ export type Database = {
   };
   public: {
     Tables: {
+      invite_tokens: TableShape<
+        InviteToken,
+        Omit<InviteToken, "id" | "token" | "created_at" | "revoked"> & {
+          id?: string;
+          token?: string;
+          created_at?: string;
+          revoked?: boolean;
+        },
+        Partial<Omit<InviteToken, "id" | "token" | "created_at">>
+      >;
       books: TableShape<
         Book,
-        Omit<Book, "id" | "created_at"> & { id?: string; created_at?: string },
+        Omit<Book, "id" | "created_at" | "status" | "invite_token_id"> & {
+          id?: string;
+          created_at?: string;
+          status?: BookStatus;
+          invite_token_id?: string | null;
+        },
         Partial<Omit<Book, "id" | "created_at">>
       >;
       excerpts: TableShape<
@@ -104,6 +133,16 @@ export type Database = {
       is_admin: {
         Args: Record<string, never>;
         Returns: boolean;
+      };
+      validate_invite_token: {
+        Args: { p_token: string };
+        Returns: {
+          id: string;
+          label: string;
+          max_books: number | null;
+          book_count: number;
+          is_valid: boolean;
+        }[];
       };
     };
     Enums: Record<string, never>;
