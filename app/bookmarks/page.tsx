@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Bookmark } from "lucide-react";
 import type { Metadata } from "next";
 import { ExcerptCard } from "@/components/excerpt-card";
+import { AccountButton } from "@/components/account-button";
 import {
   getBookmarkedExcerpts,
   getBooks,
@@ -75,17 +76,29 @@ export default async function BookmarksPage() {
 
   return (
     <div style={{ maxWidth: 680, margin: "0 auto", padding: "20px 20px 40px" }}>
-      <h1
+      <div
         style={{
-          fontFamily: "'Playfair Display', serif",
-          fontSize: 28,
-          fontWeight: 900,
-          color: "var(--ib-text-primary)",
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
           marginBottom: 20,
         }}
       >
-        Saved excerpts
-      </h1>
+        <h1
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: 28,
+            fontWeight: 900,
+            color: "var(--ib-text-primary)",
+            margin: 0,
+            flex: 1,
+            minWidth: 0,
+          }}
+        >
+          Saved excerpts
+        </h1>
+        <AccountButton isAuthed />
+      </div>
 
       {bookmarkedExcerpts.length === 0 ? (
         <div

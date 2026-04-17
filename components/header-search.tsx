@@ -2,9 +2,9 @@
 
 import { Search, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
-export function HeaderSearch() {
+export function HeaderSearch({ accountSlot }: { accountSlot: ReactNode }) {
   const router = useRouter();
   const params = useSearchParams();
   const initial = params.get("q") ?? "";
@@ -44,67 +44,71 @@ export function HeaderSearch() {
           fontWeight: 700,
           color: "var(--ib-text-primary)",
           letterSpacing: "-0.01em",
-          flex: open ? 0 : 1,
           margin: 0,
+          flex: 1,
+          minWidth: 0,
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
         }}
       >
         Inkblot Pulse
       </h1>
 
       {open ? (
-        <search style={{ flex: 1 }}>
-          <div
+        <search
+          style={{
+            display: "flex",
+            alignItems: "center",
+            background: "var(--ib-bg-card)",
+            borderRadius: 999,
+            padding: "4px 4px 4px 12px",
+            border: "1px solid rgba(138,126,116,0.2)",
+            width: "clamp(160px, 55%, 240px)",
+            minWidth: 0,
+            flexShrink: 0,
+          }}
+        >
+          <Search size={16} color="var(--ib-text-secondary)" aria-hidden="true" />
+          <input
+            autoFocus
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="Title or author"
+            aria-label="Search title or author"
             style={{
+              flex: 1,
+              border: "none",
+              outline: "none",
+              background: "transparent",
+              padding: "6px 8px",
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 16,
+              color: "var(--ib-text-primary)",
+              minWidth: 0,
+            }}
+          />
+          <button
+            type="button"
+            onClick={() => {
+              setValue("");
+              setOpen(false);
+            }}
+            aria-label="Close search"
+            style={{
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              padding: 6,
               display: "flex",
               alignItems: "center",
-              background: "var(--ib-bg-card)",
-              borderRadius: 999,
-              padding: "6px 12px",
-              border: "1px solid rgba(138,126,116,0.2)",
+              justifyContent: "center",
+              color: "var(--ib-text-secondary)",
+              flexShrink: 0,
             }}
           >
-            <Search size={16} color="var(--ib-text-secondary)" aria-hidden="true" />
-            <input
-              autoFocus
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              placeholder="Search title or author"
-              aria-label="Search title or author"
-              style={{
-                flex: 1,
-                border: "none",
-                outline: "none",
-                background: "transparent",
-                padding: "4px 10px",
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: 16,
-                color: "var(--ib-text-primary)",
-                minWidth: 0,
-              }}
-            />
-            <button
-              type="button"
-              onClick={() => {
-                setValue("");
-                setOpen(false);
-              }}
-              aria-label="Close search"
-              style={{
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-                padding: 8,
-                minWidth: 44,
-                minHeight: 44,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "var(--ib-text-secondary)",
-              }}
-            >
-              <X size={18} />
-            </button>
-          </div>
+            <X size={16} />
+          </button>
         </search>
       ) : (
         <button
@@ -112,21 +116,23 @@ export function HeaderSearch() {
           onClick={() => setOpen(true)}
           aria-label="Open search"
           style={{
-            background: "var(--ib-bg-card)",
-            border: "1px solid rgba(138,126,116,0.18)",
-            borderRadius: "50%",
-            width: 44,
-            height: 44,
+            background: "transparent",
+            border: "none",
+            width: 40,
+            height: 40,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
-            color: "var(--ib-text-primary)",
+            color: "var(--ib-text-secondary)",
+            flexShrink: 0,
           }}
         >
-          <Search size={18} />
+          <Search size={20} />
         </button>
       )}
+
+      {accountSlot}
     </header>
   );
 }

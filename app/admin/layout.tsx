@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { getCurrentProfile, getCurrentUser } from "@/lib/auth";
+import { AccountButton } from "@/components/account-button";
 
 export const metadata: Metadata = {
   title: "Admin",
@@ -49,17 +50,22 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div style={{ maxWidth: 960, margin: "0 auto", padding: "20px 20px 60px" }}>
-      <h1
-        style={{
-          fontFamily: "'Playfair Display', serif",
-          fontSize: 28,
-          fontWeight: 900,
-          color: "var(--ib-text-primary)",
-          marginBottom: 10,
-        }}
-      >
-        Admin
-      </h1>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+        <h1
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: 28,
+            fontWeight: 900,
+            color: "var(--ib-text-primary)",
+            margin: 0,
+            flex: 1,
+            minWidth: 0,
+          }}
+        >
+          Admin
+        </h1>
+        <AccountButton isAuthed />
+      </div>
       <nav
         aria-label="Admin sections"
         style={{

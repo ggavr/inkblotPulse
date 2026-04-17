@@ -5,6 +5,7 @@ import { ArrowLeft, ShoppingBag } from "lucide-react";
 import { BookCover } from "@/components/book-cover";
 import { ExcerptCard } from "@/components/excerpt-card";
 import { BuyLinkButton } from "@/components/buy-link-button";
+import { AccountButton } from "@/components/account-button";
 import {
   getBookById,
   getBooks,
@@ -75,6 +76,9 @@ export default async function BookDetailPage({
           zIndex: 30,
           borderBottom: "1px solid rgba(138,126,116,0.08)",
           marginBottom: 20,
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
         }}
       >
         <Link
@@ -90,11 +94,13 @@ export default async function BookDetailPage({
             fontWeight: 600,
             textDecoration: "none",
             padding: "10px 0",
+            flex: 1,
           }}
         >
           <ArrowLeft size={18} />
           Back
         </Link>
+        <AccountButton isAuthed={Boolean(user)} />
       </div>
 
       <header

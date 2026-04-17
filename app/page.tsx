@@ -1,5 +1,6 @@
 import { Sparkles } from "lucide-react";
 import { HeaderSearch } from "@/components/header-search";
+import { AccountButton } from "@/components/account-button";
 import { TagFilter } from "@/components/tag-filter";
 import { ExcerptCard } from "@/components/excerpt-card";
 import { FeedLoadMore } from "@/components/feed-load-more";
@@ -52,7 +53,7 @@ export default async function FeedPage({
 
   return (
     <>
-      <HeaderSearch />
+      <HeaderSearch accountSlot={<AccountButton isAuthed={Boolean(user)} />} />
       <TagFilter />
 
       <div style={{ maxWidth: 680, margin: "0 auto", padding: "10px 20px 20px" }}>

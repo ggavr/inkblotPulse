@@ -1,11 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import Link from "next/link";
 import "./globals.css";
 import { TabBar } from "@/components/tab-bar";
 import { Toaster } from "@/components/toaster";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { getCurrentProfile, getCurrentUser } from "@/lib/auth";
-import { signOutAction } from "@/app/actions/auth";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
@@ -70,80 +68,8 @@ export default async function RootLayout({
             {children}
           </main>
           <Toaster />
-          <AuthBadge email={user?.email ?? null} />
         </ErrorBoundary>
       </body>
     </html>
-  );
-}
-
-function AuthBadge({ email }: { email: string | null }) {
-  return (
-    <div
-      className="ib-auth-badge"
-      style={{
-        position: "fixed",
-        top: 12,
-        right: 12,
-        zIndex: 60,
-        display: "flex",
-        alignItems: "center",
-        gap: 8,
-        background: "var(--ib-bg-card)",
-        border: "1px solid rgba(138,126,116,0.2)",
-        borderRadius: 999,
-        padding: "8px 14px",
-        fontFamily: "'DM Sans', sans-serif",
-        fontSize: 13,
-        color: "var(--ib-text-secondary)",
-        boxShadow: "0 4px 12px rgba(45,42,38,0.06)",
-      }}
-    >
-      {email ? (
-        <>
-          <span
-            className="ib-auth-email"
-            style={{
-              maxWidth: 160,
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }}
-            aria-label="Signed in as"
-          >
-            {email}
-          </span>
-          <form action={signOutAction}>
-            <button
-              type="submit"
-              style={{
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: 13,
-                fontWeight: 600,
-                color: "var(--ib-accent)",
-                padding: "8px 4px",
-              }}
-            >
-              Sign out
-            </button>
-          </form>
-        </>
-      ) : (
-        <Link
-          href="/auth/sign-in"
-          style={{
-            display: "inline-block",
-            fontWeight: 600,
-            color: "var(--ib-accent)",
-            padding: "8px 14px",
-          }}
-        >
-          Sign in
-        </Link>
-      )}
-    </div>
   );
 }

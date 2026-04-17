@@ -215,15 +215,6 @@ select {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* AuthBadge: reposition on mobile to avoid overlapping sticky header */
-@media (max-width: 767px) {
-  .ib-auth-badge {
-    top: auto !important;
-    bottom: 72px !important;
-    right: 12px !important;
-  }
-}
-
 /* Hide action button labels on small screens, keep icons only */
 @media (max-width: 360px) {
   .ib-action-label {
@@ -271,11 +262,5 @@ select {
   }
   .ib-book-header [role="img"] {
     width: 120px !important;
-  }
-  .ib-auth-email {
-    max-width: 100px !important;
-  }
-  .ib-auth-badge {
-    display: none !important;
   }
 }
