@@ -225,7 +225,7 @@ select {
 }
 
 /* Hide action button labels on small screens, keep icons only */
-@media (max-width: 420px) {
+@media (max-width: 360px) {
   .ib-action-label {
     display: none !important;
   }
