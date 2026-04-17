@@ -19,11 +19,30 @@ export async function getBookById(id: string): Promise<Book | null> {
   return data;
 }
 
+export async function getPublishedExcerptById(
+  id: string
+): Promise<{ excerpt: ExcerptWithStats; book: Book } | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("excerpts")
+    .select("*, excerpt_stats(views, likes, want_clicks, shares), books!inner(*)")
+    .eq("id", id)
+    .eq("books.status", "published")
+    .maybeSingle();
+  if (error || !data) return null;
+
+  type Row = ExcerptJoin & { books: Book | Book[] | null };
+  const row = data as unknown as Row;
+  const book = Array.isArray(row.books) ? row.books[0] : row.books;
+  if (!book) return null;
+
+  return { excerpt: joinStats(row), book };
+}
+
+type StatsShape = { views: number; likes: number; want_clicks: number; shares: number };
+
 type ExcerptJoin = Excerpt & {
-  excerpt_stats:
-    | { views: number; likes: number; want_clicks: number }
-    | { views: number; likes: number; want_clicks: number }[]
-    | null;
+  excerpt_stats: StatsShape | StatsShape[] | null;
 };
 
 function joinStats(row: ExcerptJoin): ExcerptWithStats {
@@ -40,6 +59,7 @@ function joinStats(row: ExcerptJoin): ExcerptWithStats {
       views: stats?.views ?? 0,
       likes: stats?.likes ?? 0,
       want_clicks: stats?.want_clicks ?? 0,
+      shares: stats?.shares ?? 0,
     },
   };
 }
@@ -53,7 +73,7 @@ export async function getExcerpts(opts?: {
   const supabase = await createClient();
   let query = supabase
     .from("excerpts")
-    .select("*, excerpt_stats(views, likes, want_clicks), books!inner(id, tags, title, author, status)")
+    .select("*, excerpt_stats(views, likes, want_clicks, shares), books!inner(id, tags, title, author, status)")
     .eq("books.status", "published")
     .order("created_at", { ascending: true });
 
@@ -81,7 +101,7 @@ export async function getExcerptsForBook(bookId: string): Promise<ExcerptWithSta
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("excerpts")
-    .select("*, excerpt_stats(views, likes, want_clicks)")
+    .select("*, excerpt_stats(views, likes, want_clicks, shares)")
     .eq("book_id", bookId)
     .order("order", { ascending: true });
   if (error) throw error;
@@ -92,7 +112,7 @@ export async function getAllExcerpts(): Promise<ExcerptWithStats[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("excerpts")
-    .select("*, excerpt_stats(views, likes, want_clicks)")
+    .select("*, excerpt_stats(views, likes, want_clicks, shares)")
     .order("created_at", { ascending: true });
   if (error) throw error;
   return ((data as unknown) as ExcerptJoin[] | null ?? []).map(joinStats);
@@ -129,7 +149,7 @@ export async function getBookmarkedExcerpts(): Promise<ExcerptWithStats[]> {
   const { data, error } = await supabase
     .from("bookmarks")
     .select(
-      "excerpt_id, excerpts(*, excerpt_stats(views, likes, want_clicks))"
+      "excerpt_id, excerpts(*, excerpt_stats(views, likes, want_clicks, shares))"
     )
     .order("created_at", { ascending: false });
   if (error) return [];
@@ -185,7 +205,7 @@ export async function getExcerptsForTokenBook(
 
   const { data, error } = await sb
     .from("excerpts")
-    .select("*, excerpt_stats(views, likes, want_clicks)")
+    .select("*, excerpt_stats(views, likes, want_clicks, shares)")
     .eq("book_id", bookId)
     .order("order", { ascending: true });
   if (error) throw error;

@@ -86,3 +86,17 @@ export async function registerWantAction(
   if (error) { console.error("register_want failed:", error); return { ok: false, error: "want_failed" }; }
   return { ok: true };
 }
+
+export async function registerShareAction(
+  input: { excerptId: string }
+): Promise<ActionResult> {
+  const parsed = idSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "invalid_input" };
+
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("register_share", {
+    p_excerpt_id: parsed.data.excerptId,
+  });
+  if (error) { console.error("register_share failed:", error); return { ok: false, error: "share_failed" }; }
+  return { ok: true };
+}

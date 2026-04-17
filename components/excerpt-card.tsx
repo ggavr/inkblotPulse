@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, useTransition } from "react";
-import { Bookmark, ChevronDown, ChevronUp, Heart, ShoppingBag } from "lucide-react";
+import { Bookmark, ChevronDown, ChevronUp, Heart, Share2, ShoppingBag } from "lucide-react";
 import {
+  registerShareAction,
   registerViewAction,
   registerWantAction,
   toggleBookmarkAction,
@@ -11,7 +12,7 @@ import {
 } from "@/app/actions/engagement";
 import { BookCover } from "@/components/book-cover";
 import { DISCORD_URL } from "@/lib/constants";
-import { sanitizeHttpsUrl } from "@/lib/url";
+import { absoluteUrl, sanitizeHttpsUrl } from "@/lib/url";
 import { toast } from "@/components/toaster";
 import type { Book, ExcerptWithStats } from "@/lib/types";
 
@@ -88,6 +89,33 @@ export function ExcerptCard({ excerpt, book, initialLiked, initialBookmarked, is
         toast("Could not update bookmark.", "error");
       }
     });
+  };
+
+  const handleShare = async () => {
+    const url = absoluteUrl(`/excerpt/${excerpt.id}`);
+    const snippet = excerpt.text.slice(0, 140) + (excerpt.text.length > 140 ? "…" : "");
+    const text = `"${snippet}" — ${book.title}, ${book.author}`;
+    let shared = false;
+    if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
+      try {
+        await navigator.share({ title: book.title, text, url });
+        shared = true;
+      } catch {
+        return;
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(url);
+        toast("Link copied!", "success");
+        shared = true;
+      } catch {
+        toast("Could not copy link.", "error");
+        return;
+      }
+    }
+    if (shared) {
+      registerShareAction({ excerptId: excerpt.id }).catch(() => {});
+    }
   };
 
   const handleWant = () => {
@@ -318,6 +346,30 @@ export function ExcerptCard({ excerpt, book, initialLiked, initialBookmarked, is
           >
             <Bookmark size={20} fill={bookmarked ? "var(--ib-bookmark)" : "none"} strokeWidth={2} />
             {/* label hidden — icon-only button */}
+          </button>
+
+          <button
+            type="button"
+            onClick={handleShare}
+            className="ib-card-action"
+            aria-label="Share excerpt"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              padding: "8px 10px",
+              borderRadius: 10,
+              color: "var(--ib-text-secondary)",
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 14,
+              fontWeight: 600,
+              transition: "color 200ms, background 200ms",
+            }}
+          >
+            <Share2 size={20} strokeWidth={2} />
           </button>
 
           <a

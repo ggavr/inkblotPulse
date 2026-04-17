@@ -37,10 +37,11 @@ export type ExcerptStats = {
   views: number;
   likes: number;
   want_clicks: number;
+  shares: number;
 };
 
 export type ExcerptWithStats = Excerpt & {
-  stats: { views: number; likes: number; want_clicks: number };
+  stats: { views: number; likes: number; want_clicks: number; shares: number };
 };
 
 export type Profile = {
@@ -123,6 +124,10 @@ export type Database = {
         Returns: void;
       };
       register_want: {
+        Args: { p_excerpt_id: string };
+        Returns: void;
+      };
+      register_share: {
         Args: { p_excerpt_id: string };
         Returns: void;
       };
